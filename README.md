@@ -94,17 +94,27 @@ A simple, small (~100 lines) in-memory cache for node.js or the browser (~1.5KB 
 
 * Returns the number of cache misses.
 
-## TODO
-
-* Namespaces
-* A way of walking the cache for diagnostic purposes
-
 ## Note on Patches/Pull Requests
  
 * Fork the project.
 * Make your feature addition or bug fix.
+* Ensure it passes jshint using .jshintrc settings.
+* Ensure it matches .jsbeautifyrc settings.
+* Ensure all tests are passing.
+* Add any relevant tests.
 * Send me a pull request.
 
 ## Thanks
 
 Many thanks to Paul Tarjan for the first iteration of this library (https://github.com/ptarjan/node-cache).
+
+## CHANGELOG
+
+0.1.2
+-----
+* Integrate testing from @brianreavis
+* Add BSD License file via @brianreavis
+* 'use strict';
+* Pass jshint
+* jsbeautify
+
