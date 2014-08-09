@@ -14,6 +14,7 @@ var TinyCache = function() {
     self.debug = false;
     self.hitCount = 0;
     self.missCount = 0;
+    self.size = 0;
 
     return self;
 };
@@ -36,6 +37,7 @@ TinyCache.prototype.put = function( key, value, time ) {
     }
 
     self.cache[ key ] = record;
+    ++self.size;
 };
 
 TinyCache.prototype.del = function( key ) {
@@ -50,6 +52,7 @@ TinyCache.prototype.del = function( key ) {
 
     var isExpired = expired( record );
     delete self.cache[ key ];
+    --self.size;
     return !isExpired;
 };
 
@@ -61,6 +64,7 @@ TinyCache.prototype.clear = function() {
     }
 
     self.cache = {};
+    self.size = 0;
 };
 
 TinyCache.prototype.get = function( key ) {
@@ -79,30 +83,8 @@ TinyCache.prototype.get = function( key ) {
     return null;
 };
 
-TinyCache.prototype.size = function() {
-    var self = this;
-    var size = 0,
-        key;
-    for ( key in self.cache ) {
-        if ( self.cache.hasOwnProperty( key ) ) {
-            if ( self.get( key ) !== null ) {
-                size++;
-            }
-        }
-    }
-    return size;
-};
-
-TinyCache.prototype.memsize = function() {
-    var self = this;
-    var size = 0,
-        key;
-    for ( key in self.cache ) {
-        if ( self.cache.hasOwnProperty( key ) ) {
-            size++;
-        }
-    }
-    return size;
+TinyCache.prototype.size = TinyCache.prototype.memsize = function() {
+    return this.size;
 };
 
 TinyCache.prototype.hits = function() {
