@@ -110,6 +110,10 @@ Many thanks to Paul Tarjan for the first iteration of this library (https://gith
 
 ## CHANGELOG
 
+0.1.3
+-----
+* Fix component.json
+
 0.1.2
 -----
 * Integrate testing from @brianreavis

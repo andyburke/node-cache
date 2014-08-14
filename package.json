@@ -16,7 +16,7 @@
     "storage"
   ],
   "main": "./tinycache.js",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "scripts": {
     "test": "mocha -R list"
   },
