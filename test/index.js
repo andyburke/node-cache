@@ -10,7 +10,7 @@ var suite = function(cache) {
 		});
 		it('should return size', function() {
 			cache.clear();
-			cache.put(new_key(), 1, 10);
+			cache.put(new_key(), 1);
 			assert.equal(cache.size(), 1);
 		});
 		it('should return correct value after object falls out of cache', function(done) {
