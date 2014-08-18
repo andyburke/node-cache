@@ -31,13 +31,8 @@ TinyCache.prototype.put = function( key, value, time ) {
     };
 
     if ( record.expire ) {
-        ( function() {
-            var _self = self;
-            var timeout = setTimeout( function() {
-                _self.del( key );
-            }, time );
-            record.timeout = timeout;
-        } )();
+        var timeout = setTimeout( self.del.bind( self, key ), time );
+        record.timeout = timeout;
     }
 
     self.cache[ key ] = record;

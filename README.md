@@ -109,6 +109,9 @@ A simple, small (~100 lines) in-memory cache for node.js or the browser (~1.5KB 
 Many thanks to Paul Tarjan for the first iteration of this library (https://github.com/ptarjan/node-cache).
 
 ## CHANGELOG
+0.1.5
+-----
+* Remove an unnecessary anonymous function call
 
 0.1.4
 -----
