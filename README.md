@@ -31,11 +31,15 @@ setTimeout( function() {
     
 // don't want to allocate separate caches?
 // there's also a default shared cache:
-var sharedCache = Cache.shared;
+var sharedCache = TinyCache.shared;
+
 sharedCache.put( 'foo', 'bar' );
 
 // or you could grab it in a one-liner
 var theSharedCache = require( 'tinycache' ).shared;
+
+theSharedCache.get( 'bloop' );
+
 ```
 
 ## API
