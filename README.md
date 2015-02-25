@@ -11,7 +11,6 @@ A simple, small (~100 lines) in-memory cache for node.js or the browser (~1.5KB 
 
 ## Usage
 
-### Node
 ```javascript
 var TinyCache = require( 'tinycache' );
 var cache = new TinyCache();
@@ -38,63 +37,43 @@ sharedCache.put( 'foo', 'bar' );
 // or you could grab it in a one-liner
 var theSharedCache = require( 'tinycache' ).shared;
 ```
-### Browser
-
-#### Using Component (http://component.io)
-
-    component install andyburke/tinycache
-    
-    ...
-    
-    var TinyCache = require( 'tinycache' );
-    ...
-    
-#### By hand
-```html
-<script src="tinycache.min.js"></script>
-<script>
-    var cache = new TinyCache();
-    cache.put( 'foo', 'bar' );
-</script>
-```
 
 ## API
 
-### put = function(key, value, time)
+### cache.put( key, value[, time] )
 
-* Simply stores a value. 
-* If time isn't passed in, it is stored forever.
-* Will actually remove the value in the specified time (via `setTimeout`)
+Stores a value to the cache.
+If time (in ms) is specified, the value will be automatically removed (via setTimeout)
 
-### get = function(key)
+### cache.get( key )
 
-* Retreives a value for a given key
+Retreives a value for a given key
 
-### del = function(key)
+### cache.del( key )
 
-* Deletes a key, returns a boolean indicating if the key existed and was deleted
+Deletes a key, returns a boolean indicating if the key existed and was deleted
 
-### clear = function()
+### cache.clear()
 
-* Deletes all keys
+Deletes all keys
 
-### size = function()
+### cache.size
 
-* Returns the current number of entries in the cache
+The current number of entries in the cache
 
-### memsize = function()
+### cache.memsize
 
-* Returns the approximate size in bytes of the cache (including all objects stored and cache overhead)
+The approximate size in bytes of the cache (including all objects stored and cache overhead)
 
 This is a rough estimate, using the js-sizeof library.
 
-### hits = function()
+### cache.hits
 
-* Returns the number of cache hits
+The number of cache hits
 
-### misses = function()
+### cache.misses
 
-* Returns the number of cache misses.
+The number of cache misses.
 
 ## Contributing
  
@@ -111,6 +90,13 @@ This is a rough estimate, using the js-sizeof library.
 Many thanks to Paul Tarjan for the first iteration of this library (https://github.com/ptarjan/node-cache).
 
 ## CHANGELOG
+1.0.0
+-----
+* Change size, memsize, hits and misses to getters (breaking change)
+* Update docs
+* Update tests
+* Minor code cleanups
+
 0.1.11
 ------
 * JSHint: use single quotes

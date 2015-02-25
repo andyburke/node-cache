@@ -2,22 +2,33 @@
 
 var sizeof = require( 'js-sizeof' );
 
-function now() {
-    return ( new Date() ).getTime();
-}
-
 function expired( record ) {
-    return record.expires && record.expires < now();
+    return record.expires && record.expires < +new Date();
 }
 
 var TinyCache = function() {
     var self = this;
     self.cache = {};
-    self.hitCount = 0;
-    self.missCount = 0;
+    self._hits = 0;
+    self._misses = 0;
     self._size = 0;
 
     return self;
+};
+
+TinyCache.prototype = {
+    get size() {
+        return this._size;
+    },
+    get memsize() {
+        return sizeof( this.cache ); /* Returns the approximate memory usage of all objects stored in the cache and cache overhead */
+    },
+    get hits() {
+        return this._hits;
+    },
+    get misses() {
+        return this._misses;
+    }
 };
 
 TinyCache.prototype.put = function( key, value, time ) {
@@ -29,10 +40,10 @@ TinyCache.prototype.put = function( key, value, time ) {
 
     self.cache[ key ] = {
         value: value,
-        expires: !isNaN( time ) ? ( time + now() ) : null,
+        expires: !isNaN( time ) ? ( time + new Date() ) : null,
         timeout: !isNaN( time ) ? setTimeout( self.del.bind( self, key ), time ) : null
     };
-    
+
     ++self._size;
 };
 
@@ -66,51 +77,34 @@ TinyCache.prototype.clear = function() {
 TinyCache.prototype.get = function( key ) {
     var self = this;
     var record = self.cache[ key ];
-    if ( typeof record !== 'undefined' ) {
-        if ( !expired( record ) ) {
-            ++self.hitCount;
-            return record.value;
-        }
-        else {
-            self.del( key );
-        }
+    
+    if ( !record ) {
+        ++self._misses;
+        return null;
     }
-    ++self.missCount;
-    return null;
-};
 
-TinyCache.prototype.size = function() {
-    return this._size;
-};
+    if ( expired( record ) ) {
+        ++self._misses;
+        self.del( key );
+        return null;
+    }
 
-/* Returns the approximate memory usage of all objects stored in the cache and cache overhead */
-TinyCache.prototype.memsize = function() {
-    return sizeof( this.cache );
-};
-
-TinyCache.prototype.hits = function() {
-    var self = this;
-    return self.hitCount;
-};
-
-TinyCache.prototype.misses = function() {
-    var self = this;
-    return self.missCount;
+    ++self._hits;
+    return record.value;
 };
 
 TinyCache.shared = new TinyCache();
 
-if ( typeof( module ) !== 'undefined' && typeof( module.exports ) !== 'undefined' ) {
+if ( typeof module !== 'undefined' && module.exports ) {
     module.exports = TinyCache;
 }
+else if ( typeof define === 'function' && define.amd ) {
+    /* global define */
+    define( [], function() {
+        return TinyCache;
+    } );
+}
 else {
-    /* globals define, window */
-    if ( typeof( define ) === 'function' && define.amd ) {
-        define( [], function() {
-            return TinyCache;
-        } );
-    }
-    else {
-        window.TinyCache = TinyCache;
-    }
+    /* global window */
+    window.TinyCache = TinyCache;
 }

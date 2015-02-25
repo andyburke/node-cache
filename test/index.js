@@ -10,59 +10,59 @@ function new_key() {
 }
 
 var suite = function( cache ) {
-    describe( 'size()', function() {
-        it( 'should return 0 when empty', function() {
+    describe( 'size', function() {
+        it( 'should be 0 when empty', function() {
             cache.clear();
-            assert.equal( cache.size(), 0 );
+            assert.equal( cache.size, 0 );
         } );
-        it( 'should return size', function() {
+        it( 'should be accurate', function() {
             cache.clear();
             cache.put( new_key(), 1 );
-            assert.equal( cache.size(), 1 );
+            assert.equal( cache.size, 1 );
         } );
-        it( 'should return correct value after object falls out of cache', function( done ) {
+        it( 'should be accurate after object falls out of cache', function( done ) {
             this.slow( 200 ); // not slow at 50ms
-            var start = cache.size();
+            var start = cache.size;
             cache.put( new_key(), 1, 5 );
-            assert.equal( cache.size(), start + 1 );
+            assert.equal( cache.size, start + 1 );
             setTimeout( function() {
-                assert.equal( cache.size(), start );
+                assert.equal( cache.size, start );
                 done();
             }, 50 );
         } );
     } );
 
-    describe( 'memsize()', function() {
-        it( 'should return 0 when empty', function() {
+    describe( 'memsize', function() {
+        it( 'should be 0 when empty', function() {
             cache.clear();
-            assert.equal( cache.memsize(), 0 );
+            assert.equal( cache.memsize, 0 );
         } );
-        it( 'should return memsize', function() {
+        it( 'should be accurate', function() {
             cache.clear();
 
             var firstKey = new_key();
             cache.put( firstKey, 1 );
-            var firstSize = cache.memsize();
+            var firstSize = cache.memsize;
             assert.isAbove( firstSize, 0 );
 
             var secondKey = new_key();
             cache.put( secondKey, 10 );
-            var secondSize = cache.memsize();
+            var secondSize = cache.memsize;
             assert.isAbove( secondSize, firstSize );
             
             cache.del( secondKey );
-            assert.equal( cache.memsize(), firstSize );
+            assert.equal( cache.memsize, firstSize );
             
             cache.del( firstKey );
-            assert.equal( cache.memsize(), 0 );
+            assert.equal( cache.memsize, 0 );
         } );
-        it( 'should return correct value after object falls out of cache', function( done ) {
+        it( 'should be accurate after object falls out of cache', function( done ) {
             this.slow( 200 ); // not slow at 50ms
-            var start = cache.memsize();
+            var start = cache.memsize;
             cache.put( new_key(), 1, 5 );
-            assert.isAbove( cache.memsize(), start );
+            assert.isAbove( cache.memsize, start );
             setTimeout( function() {
-                assert.equal( cache.memsize(), start );
+                assert.equal( cache.memsize, start );
                 done();
             }, 50 );
         } );
@@ -70,15 +70,15 @@ var suite = function( cache ) {
 
     describe( 'clear()', function() {
         it( 'should clear all objects', function() {
-            var size_start = cache.size();
+            var size_start = cache.size;
             var keys = [ new_key(), new_key(), new_key() ];
             cache.put( keys[ 0 ], 1, 10 );
             cache.put( keys[ 1 ], 2, 10 );
             cache.put( keys[ 2 ], 3, 10 );
-            assert.equal( cache.size(), size_start + 3 );
+            assert.equal( cache.size, size_start + 3 );
 
             cache.clear();
-            assert.equal( cache.size(), 0 );
+            assert.equal( cache.size, 0 );
             assert.isNull( cache.get( keys[ 0 ] ) );
             assert.isNull( cache.get( keys[ 1 ] ) );
             assert.isNull( cache.get( keys[ 2 ] ) );
@@ -163,37 +163,37 @@ var suite = function( cache ) {
         it( 'should remove object', function() {
             var key = new_key();
             var val = 1;
-            var size = cache.size();
+            var size = cache.size;
             cache.put( key, val, 100 );
             assert.equal( cache.get( key ), val );
             cache.del( key );
             assert.isNull( cache.get( key ) );
-            assert.equal( cache.size(), size );
+            assert.equal( cache.size, size );
         } );
     } );
 
-    describe( 'hits()', function() {
-        it( 'should return number of cache hits', function() {
+    describe( 'hits', function() {
+        it( 'should be number of cache hits', function() {
             var key = new_key();
             cache.put( key, 1, 1 );
-            var start = cache.hits();
+            var start = cache.hits;
             cache.get( 'missing' );
             cache.get( key );
             cache.get( key );
             cache.get( key );
-            assert.equal( cache.hits(), start + 3 );
+            assert.equal( cache.hits, start + 3 );
         } );
     } );
 
-    describe( 'misses()', function() {
-        it( 'should return number of cache misses', function() {
+    describe( 'misses', function() {
+        it( 'should be number of cache misses', function() {
             var key = new_key();
             cache.put( key, 1, 1 );
-            var start = cache.misses();
+            var start = cache.misses;
             cache.get( 'missing' );
             cache.get( 'missing' );
             cache.get( key );
-            assert.equal( cache.misses(), start + 2 );
+            assert.equal( cache.misses, start + 2 );
         } );
     } );
 };
