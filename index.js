@@ -11,7 +11,6 @@ function expired( record ) {
 var TinyCache = function() {
     var self = this;
     self.cache = {};
-    self.debug = false;
     self.hitCount = 0;
     self.missCount = 0;
     self.size = 0;
