@@ -28,10 +28,10 @@ TinyCache.prototype.put = function( key, value, time ) {
 
     var record = {
         value: value,
-        expire: time ? ( time + now() ) : null
+        expire: !isNaN( time ) ? ( time + now() ) : null
     };
 
-    if ( record.expire ) {
+    if ( !isNaN( record.expire ) ) {
         var timeout = setTimeout( self.del.bind( self, key ), time );
         record.timeout = timeout;
     }
