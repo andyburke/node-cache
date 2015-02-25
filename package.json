@@ -16,7 +16,7 @@
     "storage"
   ],
   "main": "./index.js",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "scripts": {
     "test": "mocha -R list"
   },
@@ -25,12 +25,10 @@
     "url": "git://github.com/andyburke/tinycache.git"
   },
   "devDependencies": {
-    "mocha": "^1.21.3",
-    "chai": "^1.9.1"
+    "chai": "^2.1.0",
+    "mocha": "^2.1.0"
   },
   "dependencies": {
-    "chai": "^2.1.0",
-    "js-sizeof": "0.0.1",
-    "mocha": "^2.1.0"
+    "js-sizeof": "0.0.1"
   }
 }

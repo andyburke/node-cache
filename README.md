@@ -84,8 +84,9 @@ var theSharedCache = require( 'tinycache' ).shared;
 
 ### memsize = function()
 
-* Returns the number of entries taking up space in the cache
-* Will usually `== size()` unless a `setTimeout` removal went wrong
+* Returns the approximate size in bytes of the cache (including all objects stored and cache overhead)
+
+This is a rough estimate, using the js-sizeof library.
 
 ### hits = function()
 
@@ -95,7 +96,7 @@ var theSharedCache = require( 'tinycache' ).shared;
 
 * Returns the number of cache misses.
 
-## Note on Patches/Pull Requests
+## Contributing
  
 * Fork the project.
 * Make your feature addition or bug fix.
@@ -110,6 +111,11 @@ var theSharedCache = require( 'tinycache' ).shared;
 Many thanks to Paul Tarjan for the first iteration of this library (https://github.com/ptarjan/node-cache).
 
 ## CHANGELOG
+0.1.9
+-----
+* Fix an accidental dependency screwup
+* Update docs on memsize()
+
 0.1.8
 -----
 * Fix tests
