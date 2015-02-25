@@ -12,32 +12,32 @@ A simple, small (~100 lines) in-memory cache for node.js or the browser (~1.5KB 
 ## Usage
 
 ### Node
+```javascript
+var TinyCache = require( 'tinycache' );
+var cache = new TinyCache();
 
-    var TinyCache = require( 'tinycache' );
-    var cache = new TinyCache();
+// now just use the cache
 
-    // now just use the cache
+cache.put( 'foo', 'bar' );
+console.log( cache.get( 'foo' ) );
 
-    cache.put( 'foo', 'bar' );
-    console.log( cache.get( 'foo' ) );
+// that wasn't too interesting, here's the good part
 
-    // that wasn't too interesting, here's the good part
+cache.put( 'houdini', 'disapear', 100 ); // Time in ms
+console.log( 'Houdini will now ' + cache.get( 'houdini' ) );
 
-    cache.put( 'houdini', 'disapear', 100 ); // Time in ms
-    console.log( 'Houdini will now ' + cache.get( 'houdini' ) );
-
-    setTimeout( function() {
-      console.log( 'Houdini is ' + cache.get( 'houdini' ) );
-    }, 200 );
+setTimeout( function() {
+  console.log( 'Houdini is ' + cache.get( 'houdini' ) );
+}, 200 );
     
-    // don't want to allocate separate caches?
-    // there's also a default shared cache:
-    var sharedCache = Cache.shared;
-    sharedCache.put( 'foo', 'bar' );
+// don't want to allocate separate caches?
+// there's also a default shared cache:
+var sharedCache = Cache.shared;
+sharedCache.put( 'foo', 'bar' );
 
-    // or you could grab it in a one-liner
-    var theSharedCache = require( 'tinycache' ).shared;
-
+// or you could grab it in a one-liner
+var theSharedCache = require( 'tinycache' ).shared;
+```
 ### Browser
 
 #### Using Component (http://component.io)
@@ -50,12 +50,13 @@ A simple, small (~100 lines) in-memory cache for node.js or the browser (~1.5KB 
     ...
     
 #### By hand
-
-    <script src="tinycache.min.js"></script>
-    <script>
-        var cache = new TinyCache();
-        cache.put( 'foo', 'bar' );
-    </script>
+```html
+<script src="tinycache.min.js"></script>
+<script>
+    var cache = new TinyCache();
+    cache.put( 'foo', 'bar' );
+</script>
+```
 
 ## API
 
