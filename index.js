@@ -7,7 +7,7 @@ function now() {
 }
 
 function expired( record ) {
-    return record.expire && record.expire < now();
+    return record.expires && record.expires < now();
 }
 
 var TinyCache = function() {
@@ -27,17 +27,12 @@ TinyCache.prototype.put = function( key, value, time ) {
         clearTimeout( self.cache[ key ].timeout );
     }
 
-    var record = {
+    self.cache[ key ] = {
         value: value,
-        expire: !isNaN( time ) ? ( time + now() ) : null
+        expires: !isNaN( time ) ? ( time + now() ) : null,
+        timeout: !isNaN( time ) ? setTimeout( self.del.bind( self, key ), time ) : null
     };
-
-    if ( !isNaN( record.expire ) ) {
-        var timeout = setTimeout( self.del.bind( self, key ), time );
-        record.timeout = timeout;
-    }
-
-    self.cache[ key ] = record;
+    
     ++self._size;
 };
 

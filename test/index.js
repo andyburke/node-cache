@@ -17,13 +17,14 @@ var suite = function(cache) {
 			assert.equal(cache.size(), 1);
 		});
 		it('should return correct value after object falls out of cache', function(done) {
+			this.slow( 200 ); // not slow at 50ms
 			var start = cache.size();
-			cache.put(new_key(), 1, 2);
+			cache.put(new_key(), 1, 5);
 			assert.equal(cache.size(), start + 1);
 			setTimeout(function() {
 				assert.equal(cache.size(), start);
 				done();
-			}, 4);
+			}, 50);
 		});
 	});
 

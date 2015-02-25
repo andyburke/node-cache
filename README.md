@@ -110,6 +110,21 @@ var theSharedCache = require( 'tinycache' ).shared;
 Many thanks to Paul Tarjan for the first iteration of this library (https://github.com/ptarjan/node-cache).
 
 ## CHANGELOG
+0.1.8
+-----
+* Fix tests
+
+0.1.7
+-----
+* Add dependency on js-sizeof and attempt to actually calculate rough in-memory cache size
+* Fix an issue with size()
+
+0.1.6
+-----
+* Integrate some upstream changes like:
+  - hold size variable in memory instead of recalculating each time
+  - minor cleanups/fixes
+  
 0.1.5
 -----
 * Remove an unnecessary anonymous function call
