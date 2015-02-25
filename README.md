@@ -94,6 +94,13 @@ The number of cache misses.
 Many thanks to Paul Tarjan for the first iteration of this library (https://github.com/ptarjan/node-cache).
 
 ## CHANGELOG
+1.0.1
+-----
+* Improved code coverage in tests
+* Refactored timeout storage/handling
+* Removed expired checks (let timeouts handle it)
+* Doc updates
+
 1.0.0
 -----
 * Change size, memsize, hits and misses to getters (breaking change)

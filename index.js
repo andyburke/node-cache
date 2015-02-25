@@ -2,13 +2,10 @@
 
 var sizeof = require( 'js-sizeof' );
 
-function expired( record ) {
-    return record.expires && record.expires < +new Date();
-}
-
 var TinyCache = function() {
     var self = this;
-    self.cache = {};
+    self._cache = {};
+    self._timeouts = {};
     self._hits = 0;
     self._misses = 0;
     self._size = 0;
@@ -21,7 +18,7 @@ TinyCache.prototype = {
         return this._size;
     },
     get memsize() {
-        return sizeof( this.cache ); /* Returns the approximate memory usage of all objects stored in the cache and cache overhead */
+        return sizeof( this._cache ); /* Returns the approximate memory usage of all objects stored in the cache and cache overhead */
     },
     get hits() {
         return this._hits;
@@ -34,63 +31,57 @@ TinyCache.prototype = {
 TinyCache.prototype.put = function( key, value, time ) {
     var self = this;
 
-    if ( self.cache[ key ] ) {
-        clearTimeout( self.cache[ key ].timeout );
+    if ( self._timeouts[ key ] ) {
+        clearTimeout( self._timeouts[ key ] );
+        delete self._timeouts[ key ];
     }
 
-    self.cache[ key ] = {
-        value: value,
-        expires: !isNaN( time ) ? ( time + new Date() ) : null,
-        timeout: !isNaN( time ) ? setTimeout( self.del.bind( self, key ), time ) : null
-    };
+    self._cache[ key ] = value;
+    
+    if ( !isNaN( time ) ) {
+        self._timeouts[ key ] = setTimeout( self.del.bind( self, key ), time );
+    }
 
     ++self._size;
 };
 
 TinyCache.prototype.del = function( key ) {
     var self = this;
-    var record = self.cache[ key ];
 
-    if ( !record ) {
+    clearTimeout( self._timeouts[ key ] );
+    delete self._timeouts[ key ];
+    
+    if ( !( key in self._cache )  ) {
         return false;
     }
-
-    clearTimeout( record.timeout );
-
-    var isExpired = expired( record );
-    delete self.cache[ key ];
+    
+    delete self._cache[ key ];
     --self._size;
-    return !isExpired;
+    return true;
 };
 
 TinyCache.prototype.clear = function() {
     var self = this;
 
-    for ( var key in self.cache ) {
-        clearTimeout( self.cache[ key ].timeout );
+    for ( var key in self._timeouts ) {
+        clearTimeout( self._timeouts[ key ] );
     }
 
-    self.cache = {};
+    self._cache = {};
+    self._timeouts = {};
     self._size = 0;
 };
 
 TinyCache.prototype.get = function( key ) {
     var self = this;
-    var record = self.cache[ key ];
     
-    if ( !record ) {
+    if ( !( key in self._cache ) ) {
         ++self._misses;
-        return null;
-    }
-
-    if ( expired( record ) ) {
-        ++self._misses;
-        self.del( key );
         return null;
     }
 
     ++self._hits;
-    return record.value;
+    return self._cache[ key ];
 };
 
 TinyCache.shared = new TinyCache();

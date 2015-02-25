@@ -170,6 +170,9 @@ var suite = function( cache ) {
             assert.isNull( cache.get( key ) );
             assert.equal( cache.size, size );
         } );
+        it( 'should return false when trying to remove a nonexistent object', function() {
+            assert.notOk( cache.del( 'nonexistent' ) );
+        } );        
     } );
 
     describe( 'hits', function() {
