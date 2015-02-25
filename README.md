@@ -71,7 +71,7 @@ A simple, small (~100 lines) in-memory cache for node.js or the browser (~1.5KB 
 
 ### del = function(key)
 
-* Deletes a key
+* Deletes a key, returns a boolean indicating if the key existed and was deleted
 
 ### clear = function()
 
