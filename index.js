@@ -1,5 +1,7 @@
 'use strict';
 
+var sizeof = require( 'js-sizeof' );
+
 function now() {
     return ( new Date() ).getTime();
 }
@@ -13,7 +15,7 @@ var TinyCache = function() {
     self.cache = {};
     self.hitCount = 0;
     self.missCount = 0;
-    self.size = 0;
+    self._size = 0;
 
     return self;
 };
@@ -36,7 +38,7 @@ TinyCache.prototype.put = function( key, value, time ) {
     }
 
     self.cache[ key ] = record;
-    ++self.size;
+    ++self._size;
 };
 
 TinyCache.prototype.del = function( key ) {
@@ -51,7 +53,7 @@ TinyCache.prototype.del = function( key ) {
 
     var isExpired = expired( record );
     delete self.cache[ key ];
-    --self.size;
+    --self._size;
     return !isExpired;
 };
 
@@ -63,7 +65,7 @@ TinyCache.prototype.clear = function() {
     }
 
     self.cache = {};
-    self.size = 0;
+    self._size = 0;
 };
 
 TinyCache.prototype.get = function( key ) {
@@ -82,8 +84,13 @@ TinyCache.prototype.get = function( key ) {
     return null;
 };
 
-TinyCache.prototype.size = TinyCache.prototype.memsize = function() {
-    return this.size;
+TinyCache.prototype.size = function() {
+    return this._size;
+};
+
+/* Returns the approximate memory usage of all objects stored in the cache and cache overhead */
+TinyCache.prototype.memsize = function() {
+    return sizeof( this.cache );
 };
 
 TinyCache.prototype.hits = function() {

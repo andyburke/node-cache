@@ -1,5 +1,8 @@
+/* global describe, it */
+'use strict';
+
 var assert = require('chai').assert;
-var TinyCache = require('../tinycache.js');
+var TinyCache = require('../');
 var i = 0, new_key = function() { return 'key_' + (++i); };
 
 var suite = function(cache) {
@@ -95,7 +98,7 @@ var suite = function(cache) {
 				var ttl = 20;
 				var value = {a:1};
 				var key = new_key();
-				cache.put(key, value, ttl)
+				cache.put(key, value, ttl);
 				setTimeout(function() {
 					assert.isNull(cache.get(key));
 					done();
