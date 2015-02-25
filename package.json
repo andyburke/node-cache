@@ -16,7 +16,7 @@
     "storage"
   ],
   "main": "./index.js",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "scripts": {
     "test": "mocha -R list"
   },

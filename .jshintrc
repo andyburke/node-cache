@@ -6,6 +6,7 @@
     "predef": [ "require", "module" ],
     "globalstrict": true,
     "trailing": true,
-    "-W097": true
+    "-W097": true,
+    "quotmark": "single"
 }
 

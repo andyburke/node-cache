@@ -111,10 +111,18 @@ This is a rough estimate, using the js-sizeof library.
 Many thanks to Paul Tarjan for the first iteration of this library (https://github.com/ptarjan/node-cache).
 
 ## CHANGELOG
-0.1.9
------
+0.1.11
+------
+* JSHint: use single quotes
+
+0.1.10
+------
 * Fix an accidental dependency screwup
 * Update docs on memsize()
+
+0.1.9
+-----
+* Add/update some tests
 
 0.1.8
 -----

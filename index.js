@@ -66,7 +66,7 @@ TinyCache.prototype.clear = function() {
 TinyCache.prototype.get = function( key ) {
     var self = this;
     var record = self.cache[ key ];
-    if ( typeof record != "undefined" ) {
+    if ( typeof record !== 'undefined' ) {
         if ( !expired( record ) ) {
             ++self.hitCount;
             return record.value;
