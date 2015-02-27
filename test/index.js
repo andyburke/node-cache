@@ -86,10 +86,12 @@ var suite = function( cache ) {
     } );
 
     describe( 'get()', function() {
+        it( 'should return the internal cache object when called with no key', function() {
+            assert.equal( cache._cache, cache.get() );
+        } );
         it( 'should return null if key doesn\'t exist', function() {
             assert.isNull( cache.get( 'awf1n1a' ) );
             assert.isNull( cache.get( null ) );
-            assert.isNull( cache.get() );
             assert.isNull( cache.get( 1 ) );
             assert.isNull( cache.get( true ) );
             assert.isNull( cache.get( false ) );

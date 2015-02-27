@@ -49,9 +49,9 @@ theSharedCache.get( 'bloop' );
 Stores a value to the cache.
 If time (in ms) is specified, the value will be automatically removed (via setTimeout)
 
-### cache.get( key )
+### cache.get( [key] )
 
-Retreives a value for a given key
+Retreives a value for a given key, or if no key is passed, will return the internal cache object.
 
 ### cache.del( key )
 
@@ -94,6 +94,10 @@ The number of cache misses.
 Many thanks to Paul Tarjan for the first iteration of this library (https://github.com/ptarjan/node-cache).
 
 ## CHANGELOG
+1.1.0
+-----
+* Return internal cache if get is called with no arguments
+
 1.0.1
 -----
 * Improved code coverage in tests

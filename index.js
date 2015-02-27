@@ -75,6 +75,10 @@ TinyCache.prototype.clear = function() {
 TinyCache.prototype.get = function( key ) {
     var self = this;
     
+    if ( typeof key === 'undefined' ) {
+        return self._cache;
+    }
+    
     if ( !( key in self._cache ) ) {
         ++self._misses;
         return null;
