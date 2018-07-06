@@ -1,16 +1,15 @@
 'use strict';
 
-var sizeof = require( 'js-sizeof' );
+const sizeof = require( 'js-sizeof' );
 
-var TinyCache = function() {
-    var self = this;
-    self._cache = {};
-    self._timeouts = {};
-    self._hits = 0;
-    self._misses = 0;
-    self._size = 0;
+const TinyCache = function() {
+    this._cache = {};
+    this._timeouts = {};
+    this._hits = 0;
+    this._misses = 0;
+    this._size = 0;
 
-    return self;
+    return this;
 };
 
 TinyCache.prototype = {
@@ -25,67 +24,59 @@ TinyCache.prototype = {
     },
     get misses() {
         return this._misses;
-    }
-};
+    },
 
-TinyCache.prototype.put = function( key, value, time ) {
-    var self = this;
-
-    if ( self._timeouts[ key ] ) {
-        clearTimeout( self._timeouts[ key ] );
-        delete self._timeouts[ key ];
-    }
-
-    self._cache[ key ] = value;
+    put: function( key, value, time ) {
+        if ( this._timeouts[ key ] ) {
+            clearTimeout( this._timeouts[ key ] );
+            delete this._timeouts[ key ];
+        }
     
-    if ( !isNaN( time ) ) {
-        self._timeouts[ key ] = setTimeout( self.del.bind( self, key ), time );
-    }
-
-    ++self._size;
-};
-
-TinyCache.prototype.del = function( key ) {
-    var self = this;
-
-    clearTimeout( self._timeouts[ key ] );
-    delete self._timeouts[ key ];
+        this._cache[ key ] = value;
+        
+        if ( !isNaN( time ) ) {
+            this._timeouts[ key ] = setTimeout( this.del.bind( this, key ), time );
+        }
     
-    if ( !( key in self._cache )  ) {
-        return false;
-    }
+        ++this._size;
+    },
+
+    get: function( key ) {
+        if ( typeof key === 'undefined' ) {
+            return this._cache;
+        }
+        
+        if ( !( key in this._cache ) ) {
+            ++this._misses;
+            return null;
+        }
     
-    delete self._cache[ key ];
-    --self._size;
-    return true;
-};
+        ++this._hits;
+        return this._cache[ key ];
+    },
 
-TinyCache.prototype.clear = function() {
-    var self = this;
+    del: function( key ) {
+        clearTimeout( this._timeouts[ key ] );
+        delete this._timeouts[ key ];
+        
+        if ( !( key in this._cache )  ) {
+            return false;
+        }
+        
+        delete this._cache[ key ];
+        --this._size;
+        return true;
+    },
 
-    for ( var key in self._timeouts ) {
-        clearTimeout( self._timeouts[ key ] );
-    }
-
-    self._cache = {};
-    self._timeouts = {};
-    self._size = 0;
-};
-
-TinyCache.prototype.get = function( key ) {
-    var self = this;
+    clear: function() {
+        for ( let key in this._timeouts ) {
+            clearTimeout( this._timeouts[ key ] );
+        }
     
-    if ( typeof key === 'undefined' ) {
-        return self._cache;
+        this._cache = {};
+        this._timeouts = {};
+        this._size = 0;
     }
-    
-    if ( !( key in self._cache ) ) {
-        ++self._misses;
-        return null;
-    }
-
-    ++self._hits;
-    return self._cache[ key ];
 };
 
 TinyCache.shared = new TinyCache();

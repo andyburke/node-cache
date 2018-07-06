@@ -1,15 +1,16 @@
 /* global describe, it */
 'use strict';
 
-var assert = require( 'chai' ).assert;
-var TinyCache = require( '../' );
+const assert = require( 'chai' ).assert;
+const TinyCache = require( '../' );
 
-var i = 0;
+let i = 0;
+
 function new_key() {
-	return 'key_' + ( ++i );
+    return 'key_' + ( ++i );
 }
 
-var suite = function( cache ) {
+const suite = function( cache ) {
     describe( 'size', function() {
         it( 'should be 0 when empty', function() {
             cache.clear();
@@ -22,7 +23,7 @@ var suite = function( cache ) {
         } );
         it( 'should be accurate after object falls out of cache', function( done ) {
             this.slow( 200 ); // not slow at 50ms
-            var start = cache.size;
+            const start = cache.size;
             cache.put( new_key(), 1, 5 );
             assert.equal( cache.size, start + 1 );
             setTimeout( function() {
@@ -33,32 +34,35 @@ var suite = function( cache ) {
     } );
 
     describe( 'memsize', function() {
+
         it( 'should be 0 when empty', function() {
             cache.clear();
             assert.equal( cache.memsize, 0 );
         } );
+
         it( 'should be accurate', function() {
             cache.clear();
 
-            var firstKey = new_key();
+            const firstKey = new_key();
             cache.put( firstKey, 1 );
-            var firstSize = cache.memsize;
+            const firstSize = cache.memsize;
             assert.isAbove( firstSize, 0 );
 
-            var secondKey = new_key();
+            const secondKey = new_key();
             cache.put( secondKey, 10 );
-            var secondSize = cache.memsize;
+            const secondSize = cache.memsize;
             assert.isAbove( secondSize, firstSize );
-            
+
             cache.del( secondKey );
             assert.equal( cache.memsize, firstSize );
-            
+
             cache.del( firstKey );
             assert.equal( cache.memsize, 0 );
         } );
+
         it( 'should be accurate after object falls out of cache', function( done ) {
             this.slow( 200 ); // not slow at 50ms
-            var start = cache.memsize;
+            const start = cache.memsize;
             cache.put( new_key(), 1, 5 );
             assert.isAbove( cache.memsize, start );
             setTimeout( function() {
@@ -70,8 +74,8 @@ var suite = function( cache ) {
 
     describe( 'clear()', function() {
         it( 'should clear all objects', function() {
-            var size_start = cache.size;
-            var keys = [ new_key(), new_key(), new_key() ];
+            const size_start = cache.size;
+            const keys = [ new_key(), new_key(), new_key() ];
             cache.put( keys[ 0 ], 1, 10 );
             cache.put( keys[ 1 ], 2, 10 );
             cache.put( keys[ 2 ], 3, 10 );
@@ -89,6 +93,7 @@ var suite = function( cache ) {
         it( 'should return the internal cache object when called with no key', function() {
             assert.equal( cache._cache, cache.get() );
         } );
+
         it( 'should return null if key doesn\'t exist', function() {
             assert.isNull( cache.get( 'awf1n1a' ) );
             assert.isNull( cache.get( null ) );
@@ -96,12 +101,13 @@ var suite = function( cache ) {
             assert.isNull( cache.get( true ) );
             assert.isNull( cache.get( false ) );
         } );
+
         it( 'should return value', function() {
-            var complicated = [ 'a', {
+            const complicated = [ 'a', {
                 'b': 'c',
                 'd': [ 'e', 3 ]
             }, '@' ];
-            var key = new_key();
+            const key = new_key();
             cache.put( key, complicated, 100 );
             assert.deepEqual( cache.get( key ), complicated );
         } );
@@ -109,15 +115,15 @@ var suite = function( cache ) {
 
     describe( 'put()', function() {
         it( 'should overwrite existing object if exists', function( done ) {
-            var ttl1 = 20;
-            var ttl2 = 20;
-            var value1 = {
+            const ttl1 = 20;
+            const ttl2 = 20;
+            const value1 = {
                 a: 1
             };
-            var value2 = {
+            const value2 = {
                 a: 2
             };
-            var key = new_key();
+            const key = new_key();
 
             cache.put( key, value1, ttl1 );
             assert.deepEqual( cache.get( key ), value1 );
@@ -135,11 +141,11 @@ var suite = function( cache ) {
         } );
         describe( 'stored object', function() {
             it( 'should exist during ttl (ms)', function( done ) {
-                var ttl = 20;
-                var value = {
+                const ttl = 20;
+                const value = {
                     a: 1
                 };
-                var key = new_key();
+                const key = new_key();
                 cache.put( key, value, ttl );
                 setTimeout( function() {
                     assert.deepEqual( cache.get( key ), value );
@@ -147,11 +153,11 @@ var suite = function( cache ) {
                 }, 10 );
             } );
             it( 'should expire after ttl (ms)', function( done ) {
-                var ttl = 20;
-                var value = {
+                const ttl = 20;
+                const value = {
                     a: 1
                 };
-                var key = new_key();
+                const key = new_key();
                 cache.put( key, value, ttl );
                 setTimeout( function() {
                     assert.isNull( cache.get( key ) );
@@ -163,9 +169,9 @@ var suite = function( cache ) {
 
     describe( 'del()', function() {
         it( 'should remove object', function() {
-            var key = new_key();
-            var val = 1;
-            var size = cache.size;
+            const key = new_key();
+            const val = 1;
+            const size = cache.size;
             cache.put( key, val, 100 );
             assert.equal( cache.get( key ), val );
             cache.del( key );
@@ -174,14 +180,14 @@ var suite = function( cache ) {
         } );
         it( 'should return false when trying to remove a nonexistent object', function() {
             assert.notOk( cache.del( 'nonexistent' ) );
-        } );        
+        } );
     } );
 
     describe( 'hits', function() {
         it( 'should be number of cache hits', function() {
-            var key = new_key();
+            const key = new_key();
             cache.put( key, 1, 1 );
-            var start = cache.hits;
+            const start = cache.hits;
             cache.get( 'missing' );
             cache.get( key );
             cache.get( key );
@@ -192,9 +198,9 @@ var suite = function( cache ) {
 
     describe( 'misses', function() {
         it( 'should be number of cache misses', function() {
-            var key = new_key();
+            const key = new_key();
             cache.put( key, 1, 1 );
-            var start = cache.misses;
+            const start = cache.misses;
             cache.get( 'missing' );
             cache.get( 'missing' );
             cache.get( key );
