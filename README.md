@@ -22,7 +22,7 @@ console.log( cache.get( 'foo' ) );
 
 // that wasn't too interesting, here's the good part
 
-cache.put( 'houdini', 'disapear', 100 ); // Time in ms
+cache.put( 'houdini', 'disappear', 100 ); // Time in ms
 console.log( 'Houdini will now ' + cache.get( 'houdini' ) );
 
 setTimeout( function() {
